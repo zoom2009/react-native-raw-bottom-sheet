@@ -84,6 +84,7 @@ class RBSheet extends Component {
   }
 
   close(props) {
+    this.props.onPressClose && this.props.onPressClose();
     this.setModalVisible(false, props);
   }
 
