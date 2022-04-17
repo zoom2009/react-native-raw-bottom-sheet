@@ -32,7 +32,7 @@ class RBSheet extends Component {
   }
 
   setModalVisible(visible, props) {
-    const { height, minClosingHeight, openDuration, closeDuration, onClose, onOpen } = this.props;
+    const { height, minClosingHeight, openDuration, closeDuration, onBeforeClose, onClose, onOpen } = this.props;
     const { animatedHeight, pan } = this.state;
     if (visible) {
       this.setState({ modalVisible: visible });
@@ -43,6 +43,8 @@ class RBSheet extends Component {
         duration: openDuration
       }).start();
     } else {
+      if (typeof onBeforeClose === "function") onBeforeClose()
+
       Animated.timing(animatedHeight, {
         useNativeDriver: false,
         toValue: minClosingHeight,
@@ -156,6 +158,7 @@ RBSheet.propTypes = {
   closeOnPressBack: PropTypes.bool,
   keyboardAvoidingViewEnabled: PropTypes.bool,
   customStyles: PropTypes.objectOf(PropTypes.object),
+  onBeforeClose: PropTypes.func,
   onClose: PropTypes.func,
   onOpen: PropTypes.func,
   children: PropTypes.node
@@ -173,6 +176,7 @@ RBSheet.defaultProps = {
   closeOnPressBack: true,
   keyboardAvoidingViewEnabled: Platform.OS === "ios",
   customStyles: {},
+  onBeforeClose: null,
   onClose: null,
   onOpen: null,
   children: <View />
