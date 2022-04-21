@@ -97,6 +97,7 @@ class RBSheet extends Component {
       dragFromTopOnly,
       closeOnPressMask,
       closeOnPressBack,
+      onPressBack,
       children,
       customStyles,
       keyboardAvoidingViewEnabled
@@ -113,7 +114,10 @@ class RBSheet extends Component {
         visible={modalVisible}
         supportedOrientations={SUPPORTED_ORIENTATIONS}
         onRequestClose={() => {
-          if (closeOnPressBack) this.setModalVisible(false);
+          if (closeOnPressBack) {
+            onPressBack && onPressBack();
+            this.setModalVisible(false);
+          }
         }}
       >
         <KeyboardAvoidingView
@@ -156,6 +160,7 @@ RBSheet.propTypes = {
   closeOnPressMask: PropTypes.bool,
   dragFromTopOnly: PropTypes.bool,
   closeOnPressBack: PropTypes.bool,
+  onPressBack: PropTypes.func,
   keyboardAvoidingViewEnabled: PropTypes.bool,
   customStyles: PropTypes.objectOf(PropTypes.object),
   onBeforeClose: PropTypes.func,
@@ -174,6 +179,7 @@ RBSheet.defaultProps = {
   dragFromTopOnly: false,
   closeOnPressMask: true,
   closeOnPressBack: true,
+  onPressBack: null,
   keyboardAvoidingViewEnabled: Platform.OS === "ios",
   customStyles: {},
   onBeforeClose: null,
